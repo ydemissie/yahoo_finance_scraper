@@ -96,7 +96,10 @@ module YahooFinance
         strike, name, last, chg, bid, ask, volume, open_int = tds.map &:text
 
         # parse out expiry
-        date_string = name.match(/#{symbol}(\d{6})/i)[1]
+        date_string = name.match(/#{symbol}(\d+)/i)[1]
+        if date_string.length == 7
+          date_string = date_string.match(/(^\d)(\d+)/)[2]
+        end
         expires_at = Date.strptime(date_string, '%y%m%d').to_time
 
         # parse out +/- change
